@@ -1,4 +1,4 @@
-class BST
+class BST  
   class Node
     include Comparable
     attr_accessor :left, :right, :data
@@ -103,6 +103,17 @@ class BST
       arr
     end
   end
+  
+  def inorder_traversal(traversal_arr = [], current_node = @root, &block_argument)
+    return if current_node.nil?
+
+    inorder_traversal(traversal_arr, current_node.left, &block_argument)
+    elem = block_argument ? block_argument.call(current_node.data) : current_node.data
+    traversal_arr.append(elem)
+    inorder_traversal(traversal_arr, current_node.right, &block_argument)
+    traversal_arr
+  end
+
 end
 
 tree = BST.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 300, 450, 225, 221, 17, 18, 15])
@@ -115,5 +126,7 @@ tree = BST.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 300, 450, 225, 
 tree.pretty_print
 
 # p tree.find(451)
-p tree.level_order
-# test = tree.level_order { |e| e * 2 }
+# p tree.level_order
+# tree.level_order { |e| puts e * 2 }
+# p test
+p tree.inorder_traversal { |e| e * 3 }
