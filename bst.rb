@@ -73,7 +73,7 @@ class BST
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 
-  def level_order(&block_argument)
+  def level_order_traversal(&block_argument)
     arr = []
     queue = [@root]
     until queue.empty?
@@ -150,6 +150,20 @@ class BST
       current_node = target_node > current_node ? current_node.right : current_node.left
     end
   end
+
+  def balanced?(node = @root)
+    if node.left.nil? && node.right.nil?
+      true
+    elsif !node.left.nil? && !node.right.nil?
+      (height(node.left) - height(node.right)).abs <= 1
+    else
+      node.left.nil? ? height(node.right) < 1 : height(node.left) < 1
+    end
+  end
+
+  def rebalance
+    initialize(level_order)
+  end
 end
 
 class Node
@@ -167,18 +181,22 @@ class Node
   end
 end
 
-tree = BST.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 300, 450, 225, 221, 17, 18, 15])
-# tree.pretty_print
-# tree.insert(100)
-# tree.insert(7)
-tree.insert(226)
-# tree.pretty_print
-# tree.delete(17)
+tree = BST.new((Array.new(15) { rand(1..100) }))
+puts 'Tree initialized:'
 tree.pretty_print
-
-# p tree.find(451)
-# p tree.level_order
-# tree.level_order { |e| puts e * 2 }
-# p test
-# tree.postorder_traversal{ |e| e * 2 }
-p tree.depth(Node.new(nil, nil, 226))
+puts 'Checking the tree is balanced:'
+puts tree.balanced?
+puts "Level Order Traversal: #{tree.level_order_traversal}"
+puts "Pre Order Traversal: #{tree.preorder_traversal}"
+puts "Post Order Traversal: #{tree.postorder_traversal}"
+puts "In Order Traversal: #{tree.inorder_traversal}"
+tree.insert(110)
+tree.insert(112)
+tree.insert(114)
+tree.pretty_print
+puts 'Checking that tree is now unbalanced after adding numbers:'
+puts tree.balanced?
+puts "Level Order Traversal: #{tree.level_order_traversal}"
+puts "Pre Order Traversal: #{tree.preorder_traversal}"
+puts "Post Order Traversal: #{tree.postorder_traversal}"
+puts "In Order Traversal: #{tree.inorder_traversal}"
