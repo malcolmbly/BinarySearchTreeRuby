@@ -140,9 +140,15 @@ class BST
     end
   end
 
-
   def depth(target_node)
+    current_node = @root
+    depth = 0
+    until current_node.nil?
+      return depth if current_node == target_node
 
+      depth += 1
+      current_node = target_node > current_node ? current_node.right : current_node.left
+    end
   end
 end
 
@@ -165,7 +171,7 @@ tree = BST.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 300, 450, 225, 
 # tree.pretty_print
 # tree.insert(100)
 # tree.insert(7)
-# tree.insert(2)
+tree.insert(226)
 # tree.pretty_print
 # tree.delete(17)
 tree.pretty_print
@@ -175,4 +181,4 @@ tree.pretty_print
 # tree.level_order { |e| puts e * 2 }
 # p test
 # tree.postorder_traversal{ |e| e * 2 }
-p tree.height(Node.new(nil, nil, 7))
+p tree.depth(Node.new(nil, nil, 226))
