@@ -58,10 +58,11 @@ class BST
     end
   end
 
-  def find(value)
-    current_node = @root
+  def find(value, start_node = @root)
+    current_node = start_node
     until current_node.nil?
       return current_node if current_node.data == value
+
       current_node = value > current_node.data ? current_node.right : current_node.left
     end
   end
@@ -88,7 +89,7 @@ class BST
       arr
     end
   end
-  
+
   def inorder_traversal(traversal_arr = [], current_node = @root, &block_argument)
     return if current_node.nil?
 
@@ -98,7 +99,7 @@ class BST
     inorder_traversal(traversal_arr, current_node.right, &block_argument)
     traversal_arr
   end
-  
+
   def preorder_traversal(traversal_arr = [], current_node = @root, &block_argument)
     return if current_node.nil?
 
@@ -120,16 +121,28 @@ class BST
     traversal_arr
   end
 
-  def height(target_node)
-    node = find(target_node.data)
-    return nil if node.nil?
+  def height(node)
+    found_node = find(node.data)
+    if found_node.nil?
+      nil
+    else
+      subheight(found_node)
+    end
+  end
+
+  def subheight(node)
     return 0 if node.left.nil? && node.right.nil?
 
     if node.right.nil? || node.left.nil?
-      node.right.nil? ? height(node.left) + 1 : height(node.right) + 1
+      node.right.nil? ? subheight(node.left) + 1 : subheight(node.right) + 1
     else
-      [height(node.left), height(node.right)].max + 1
+      [subheight(node.left), subheight(node.right)].max + 1
     end
+  end
+
+
+  def depth(target_node)
+
   end
 end
 
