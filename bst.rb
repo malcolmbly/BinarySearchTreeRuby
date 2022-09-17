@@ -113,7 +113,27 @@ class BST
     inorder_traversal(traversal_arr, current_node.right, &block_argument)
     traversal_arr
   end
+  
+  def preorder_traversal(traversal_arr = [], current_node = @root, &block_argument)
+    return if current_node.nil?
 
+    elem = block_argument ? block_argument.call(current_node.data) : current_node.data
+    traversal_arr.append(elem)
+    preorder_traversal(traversal_arr, current_node.left, &block_argument)
+    preorder_traversal(traversal_arr, current_node.right, &block_argument)
+
+    traversal_arr
+  end
+
+  def postorder_traversal(traversal_arr = [], current_node = @root, &block_argument)
+    return if current_node.nil?
+
+    postorder_traversal(traversal_arr, current_node.left, &block_argument)
+    postorder_traversal(traversal_arr, current_node.right, &block_argument)
+    elem = block_argument ? block_argument.call(current_node.data) : current_node.data
+    traversal_arr.append(elem)
+    traversal_arr
+  end
 end
 
 tree = BST.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 300, 450, 225, 221, 17, 18, 15])
@@ -129,4 +149,5 @@ tree.pretty_print
 # p tree.level_order
 # tree.level_order { |e| puts e * 2 }
 # p test
-p tree.inorder_traversal { |e| e * 3 }
+p tree.postorder_traversal
+ 
