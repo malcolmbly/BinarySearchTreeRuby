@@ -1,19 +1,4 @@
 class BST  
-  class Node
-    include Comparable
-    attr_accessor :left, :right, :data
-
-    def initialize(left, right, data)
-      @left = left
-      @right = right
-      @data = data
-    end
-
-    def <=>(other)
-      @data <=> other.data
-    end
-  end
-
   attr_reader :root
 
   def initialize(arr)
@@ -134,6 +119,33 @@ class BST
     traversal_arr.append(elem)
     traversal_arr
   end
+
+  def height(target_node)
+    node = find(target_node.data)
+    return nil if node.nil?
+    return 0 if node.left.nil? && node.right.nil?
+
+    if node.right.nil? || node.left.nil?
+      node.right.nil? ? height(node.left) + 1 : height(node.right) + 1
+    else
+      [height(node.left), height(node.right)].max + 1
+    end
+  end
+end
+
+class Node
+  include Comparable
+  attr_accessor :left, :right, :data
+
+  def initialize(left, right, data)
+    @left = left
+    @right = right
+    @data = data
+  end
+
+  def <=>(other)
+    @data <=> other.data
+  end
 end
 
 tree = BST.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 300, 450, 225, 221, 17, 18, 15])
@@ -149,5 +161,5 @@ tree.pretty_print
 # p tree.level_order
 # tree.level_order { |e| puts e * 2 }
 # p test
-p tree.postorder_traversal
- 
+# tree.postorder_traversal{ |e| e * 2 }
+p tree.height(Node.new(nil, nil, 7))
